@@ -12,18 +12,21 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   button: {
-    height: 60,
-    borderColor: '#05a5d1',
-    borderWidth: 2,
-    backgroundColor: '#333',
-    margin: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginRight: 40,
+    marginLeft: 40,
+    marginTop: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: '#68a0cf',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
   },
   buttonText: {
     color: '#FAFAFA',
     fontSize: 20,
     fontWeight: '600',
+    textAlign: 'center',
   },
 });
 
@@ -38,11 +41,21 @@ class TaskList extends Component {
     };
   }
 
-  renderRow = (todo) => {
-    return (
-      <TaskRow todo={todo} />
-    );
+  componentWillReceiveProps = (nextProps) => {
+    const dataSource = this
+      .state
+      .dataSource
+      .cloneWithRows(nextProps.todos);
+
+    this.setState({ dataSource });
   }
+
+  renderRow = todo => (
+    <TaskRow
+      onDone={this.props.onDone}
+      todo={todo}
+    />
+  );
 
   render() {
     return (
@@ -70,6 +83,7 @@ class TaskList extends Component {
 TaskList.propTypes = {
   onAddStarted: PropTypes.func.isRequired,
   todos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDone: PropTypes.func.isRequired,
 };
 
 export default TaskList;
